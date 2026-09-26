@@ -2,20 +2,32 @@ spring:
   application:
     name: gateway-service
   cloud:
+    discovery:
+      enabled: true
     gateway:
       server:
         webflux:
-          routes:
-            - id: r1
-              uri: lb://CUSTOMER-SERVICE
-              predicates:
-                - Path=/customers/**
-            - id: r2
-              uri: lb://INVENTORY-SERVICE
-              predicates:
-                - Path=/products/**
-    discovery:
-      enabled: true
+          discovery:
+            locator:
+              enabled: true
+#    gateway:
+#      server:
+#        webflux:
+#          routes:
+#            - id: r1
+#              uri: lb://CUSTOMER-SERVICE
+#              predicates:
+#                - Path=/customers/**
+#            - id: r2
+#              uri: lb://INVENTORY-SERVICE
+#              predicates:
+#                - Path=/products/**
+
 
 server:
   port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
