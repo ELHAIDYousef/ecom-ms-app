@@ -10,6 +10,6 @@ spring:
     config:
       enabled: false
     discovery:
-      enabled: false
+      enabled: true
 server:
   port: 8082
