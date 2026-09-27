@@ -1,0 +1,50 @@
+<div class="container mt-4">
+  <a routerLink="/bills" class="btn btn-secondary btn-sm mb-3">← Back</a>
+
+  @if (loading()) {
+    <div class="alert alert-info">Loading...</div>
+  } @else if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  } @else if (bill(); as b) {
+
+    <h2>Invoice #{{ b.id }}</h2>
+    <p><strong>Date:</strong> {{ b.billingDate | date:'medium' }}</p>
+
+    <!-- Customer (fetched via Feign) -->
+    <div class="card mb-3">
+      <div class="card-header">Customer</div>
+      <div class="card-body">
+        @if (b.customer) {
+          <p class="mb-1"><strong>{{ b.customer.name }}</strong></p>
+          <p class="mb-0 text-muted">{{ b.customer.email }}</p>
+        } @else {
+          <p class="text-muted mb-0">Customer data unavailable</p>
+        }
+      </div>
+    </div>
+
+    <!-- Line items (each product fetched via Feign) -->
+    <h5>Items</h5>
+    <table class="table table-bordered">
+      <thead class="table-dark">
+      <tr>
+        <th>Product</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (item of b.productItems; track item.id) {
+          <tr>
+            <td>{{ item.product?.name ?? 'Product #' + item.productId }}</td>
+            <td>{{ item.price | currency:'MAD ' }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price * item.quantity | currency:'MAD ' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+  }
+</div>

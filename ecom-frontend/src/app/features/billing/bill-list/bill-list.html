@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <h2>Bills</h2>
+
+  @if (loading()) {
+    <div class="alert alert-info">Loading...</div>
+  } @else if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  } @else {
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Customer ID</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (bill of bills(); track bill.id) {
+          <tr>
+            <td>{{ bill.id }}</td>
+            <td>{{ bill.billingDate | date:'short' }}</td>
+            <td>{{ bill.customerId }}</td>
+            <td>
+              <a class="btn btn-sm btn-primary" [routerLink]="['/bills', bill.id]">View</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="text-center">No bills found</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
